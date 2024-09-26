@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{Homework \#3}
+\author{Simon Judd}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Layered Circuits}
+
+\section{GKR for any set of gates}
+
+We define the circuit structure as $s-space$ uniform for a circuit family $\{C_{n}\}_{n \in N}$ with a width $W$ and depth $D$ that is $O(log(W \cdot D))$ uniform.
+
+We define a GKR circuit as $C:F^{n_{in}} -> F^{n_{out}}$, and define $\hat{C}$ as a low degree extension of $C$. In vanilla GKR our goal is to evaluate $C$ using a public coin IP. We do this by first defining a subset $H \subseteq F$, and then rewriting our computation as summations.
+
+Set $wp_{1},..,wp_{d}$ as the wiring predicates.
+
+The input layer $V_{D}:H^{m_{in}}->F$ is defined as $V_{d}(a)=Z_{in}(a)$:
+
+The intermediate layers as:
+$$
+V_{i} := \sum_{b, c \in H^{m}} wp_{i+1}(a,b,c) \cdot g(v_{i+1}(b), v_{i+1}(c))
+$$
+
+And the output layers as:
+$$
+V_{o} := \sum_{b, c \in H^{m}} wp_{i}(a,b,c) \cdot g(v_{i}(b), v(c_{i}))
+$$
+
+We then low-degree extend each layer.
+
+And then finally check the computation via iterated sumchecks.
+
+The bivariant polynomial $g_{k}(X,Y)$ has functions of the form $g_{k}:H^{n} -> F$, and $p \in F[X,Y]$ extends $g_{k}:H^{n} -> F$ if $p|_{H^{n}} \equiv F$.  And we bound it's degree by $deg(g_{k}) \le d$.
+
+We need to create a low-degree extension of $g_{k}$, we do this by taking a linear combination of the given function and extending it to each layer.  We define the low-degree extension of $g_{k}$ as:
+
+$$
+\hat{g}_{k}(X,Y) = \sum_{\alpha \in H^{2}} g_{k}(\alpha_{1},..,\alpha_{n}) \cdot L_{H^{n}(\alpha_{1},..,\alpha_{n})}(X, Y)
+$$
+
+
+Where $H^{2}$ is the subset of $F^{2}$ containing each component of $H$.
+And where $L_{\alpha}(X,Y)$ is the langrange basis polynomial.
+
+Next we need to replace $wp$ and $g_{k}$ with there low degree extensions.
+
+Replace $L_{H^{m},a}(X)$ with $I_{H^{m}}(X,a)$ where:
+
+$$
+I_{H^{m}}(X,Y)=\prod_{i \in [m]} \sum_{\alpha \in H} L_{H^{m},\alpha}(X_{i}) \cdot L_{H^{m},\alpha}(Y_{i})
+$$
+
+Which results in the following low-degree polynomial $V_{i}$ for each layer:
+
+$$
+V_{i}= \sum_{\alpha \in H} (\sum_{b, c \in H} \hat{wp_{i}}(a,b,c) \cdot g_{k}(\hat{v_{i}}(b), \hat{v_{1}}(c)) \cdot I_{H^{m}}(X, Y)
+$$
+
+Now we have obtained our low-degree extension the next step is to perform a multivariate sumcheck on the resulting polynomial.
+
+$$
+\sum_{\alpha \in H, b,c \in H} \hat{wp_{i}}(a,b,c) \cdot g_{k}(\hat{v_{i}}(b), \hat{v_{i}(c)}) \cdot I_{H^{m}}(X,Y) = \gamma
+$$
+
+To avoid claim blow-up, we need to batch the claims via random linear combination.
+
+$$
+\sum_{\alpha \in H, b,c \in H} \hat{wp_{i}}(a,b,c) \cdot g_{k}(\hat{v_{i}}(b), \hat{v_{i}(c)}) \cdot [\rho \cdot I_{H^{m}}(X,Y) + \beta \cdot I_{H^{m}}(X,Y)]
+$$
+
+Soundness
+
+Completeness
+
+
+
+\section{Problem: 3}
+\section{Problem: 4}
+\section{Problem: 5}
+\section{Problem: 6}
+\section{Problem: 7}
+
+
+\end{document}
